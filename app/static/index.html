@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NetLog AI — Network &amp; Server Log Analyzer</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"
+      defer
+    ></script>
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <div>
+          <h1>NetLog AI</h1>
+          <div class="brand-sub">AI-Powered Log Anomaly Detection &amp; Incident Summarizer</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <span id="health-pill" class="pill">Status: connecting…</span>
+        <span id="refresh-pill" class="pill">Auto-refresh: 30s</span>
+        <button id="refresh-btn" class="btn" type="button">Refresh Now</button>
+        <a class="btn" href="/docs" target="_blank" rel="noopener">API Docs</a>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="kpi-grid" aria-label="Operational summary metrics">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Logs Ingested</div>
+          <div id="kpi-logs" class="kpi-value">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Detected Anomalies</div>
+          <div id="kpi-anomalies" class="kpi-value">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Total Incidents</div>
+          <div id="kpi-incidents" class="kpi-value">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">High Severity Incidents</div>
+          <div id="kpi-high" class="kpi-value high">0</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Error Rate &amp; p95 Latency Timeline (Anomalies Highlighted)</h2>
+          <span class="pill">Red markers indicate detected anomaly windows</span>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="telemetryChart"></canvas>
+        </div>
+      </section>
+
+      <section class="split-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2>Incidents</h2>
+            <div class="filters">
+              <select id="severity-filter" aria-label="Filter by severity">
+                <option value="">All Severities</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+              <input
+                id="host-filter"
+                type="text"
+                placeholder="Filter by host…"
+                aria-label="Filter by host"
+              />
+            </div>
+          </div>
+          <div id="incident-list" class="incident-list">
+            <div class="empty-state">Loading incidents…</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Incident Detail &amp; AI Summary</h2>
+            <span id="detail-provider" class="pill">Select an incident</span>
+          </div>
+          <div id="incident-detail">
+            <div class="empty-state">
+              Select an incident from the list to inspect the AI summary, likely root cause,
+              suggested fix, and redacted evidence.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Quick Log Upload (.log / .txt)</h2>
+          <span class="pill">Authenticated via X-API-Key</span>
+        </div>
+        <form id="upload-form" class="upload-bar">
+          <input
+            id="api-key-input"
+            type="password"
+            placeholder="X-API-Key"
+            required
+            aria-label="API Key"
+          />
+          <input id="log-file-input" type="file" accept=".log,.txt" required />
+          <button class="btn btn-primary" type="submit">Upload &amp; Analyze</button>
+          <span id="upload-status" class="upload-status"></span>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
