@@ -1,5 +1,7 @@
 # NetLog AI
 
+[![NetLog AI CI](https://github.com/Chandu1133/netlog-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/Chandu1133/netlog-ai/actions/workflows/ci.yml)
+
 **AI-powered network & server log analyzer, hybrid anomaly detector, and plain-English incident summarizer.**
 
 NetLog AI ingests raw server logs (`syslog`, Nginx access logs, or structured JSON), detects security and reliability anomalies using modular rule-based detectors plus a scikit-learn `IsolationForest` model, redacts sensitive fields (partial IP masking, emails, JWTs, bearer tokens, and secrets), and calls a provider-agnostic LLM interface to generate structured incident summaries with a likely root cause and suggested fix.
